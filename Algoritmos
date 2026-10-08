@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algoritmos: criando uma aventura</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      color: #f5f5f5;
+      background: linear-gradient(135deg, #102a43, #243b53);
+    }
+
+    .jogo {
+      width: min(600px, 100%);
+      padding: 30px;
+      border: 1px solid #526d82;
+      border-radius: 16px;
+      background: #1b3348;
+      box-shadow: 0 12px 35px #0005;
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #ffd166;
+    }
+
+    #historia {
+      min-height: 100px;
+      line-height: 1.6;
+    }
+
+    #opcoes {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 8px;
+      color: #102a43;
+      background: #ffd166;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #ffe29a;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="jogo">
+    <h1>🗺️ Aventura na Floresta</h1>
+    <p id="historia"></p>
+    <div id="opcoes"></div>
+  </main>
+
+  <script>
+    const historia = document.querySelector("#historia");
+    const opcoes = document.querySelector("#opcoes");
+
+    const cenas = {
+      inicio: {
+        texto: "Você encontra uma trilha que se divide em duas. À esquerda há uma ponte; à direita, uma caverna escura. Para onde vai?",
+        escolhas: [
+          { texto: "Atravessar a ponte", proxima: "ponte" },
+          { texto: "Entrar na caverna", proxima: "caverna" }
+        ]
+      },
+      ponte: {
+        texto: "A ponte range, mas você consegue atravessar. Do outro lado, encontra um baú com um mapa. A aventura continua!",
+        escolhas: [
+          { texto: "Jogar novamente", proxima: "inicio" }
+        ]
+      },
+      caverna: {
+        texto: "Dentro da caverna, você encontra um dragão dormindo. Você pode sair devagar ou tentar passar por ele.",
+        escolhas: [
+          { texto: "Sair em silêncio", proxima: "inicio" },
+          { texto: "Passar pelo dragão", proxima: "tesouro" }
+        ]
+      },
+      tesouro: {
+        texto: "O dragão acorda, mas percebe que você veio em paz. Ele mostra um tesouro escondido. Você venceu a aventura! 🏆",
+        escolhas: [
+          { texto: "Jogar novamente", proxima: "inicio" }
+        ]
+      }
+    };
+
+    function mostrarCena(nome) {
+      const cena = cenas[nome];
+      historia.textContent = cena.texto;
+      opcoes.replaceChildren();
+
+      cena.escolhas.forEach(escolha => {
+        const botao = document.createElement("button");
+        botao.textContent = escolha.texto;
+        botao.addEventListener("click", () => mostrarCena(escolha.proxima));
+        opcoes.appendChild(botao);
+      });
+    }
+
+    mostrarCena("inicio");
+  </script>
+</body>
+</html>
